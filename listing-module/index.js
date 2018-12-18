@@ -22,18 +22,13 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    async listing(_, { id }, context, info) {
-      const property = propertyBinding.query.property({ id }, `{ geo }`, { context });
-      
-      return { id, ...property };
+    listing(_, { id }, context, info) {
+      return propertyBinding.query.property({ id }, `{ id, geo }`, { context });
     }
   },
   Listing: {
-    geo(_) {
-      return _.geo;
-    },
-    reviews(_) {
-      return reviewsBinding.query.reviewsByPropertyId({ propertyId: id }, info, { context });
+    reviews(_, args, context, info) {
+      return reviewsBinding.query.reviewsByPropertyId({ propertyId: _.id }, info, { context });
     }
   }
 };
