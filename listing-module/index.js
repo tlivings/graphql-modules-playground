@@ -1,8 +1,8 @@
 
 const { GraphQLModule } = require('@graphql-modules/core');
 const { Binding } = require('graphql-binding');
-const Property = require('../property-component');
-const Reviews = require('../reviews-component');
+const Property = require('../property-module');
+const Reviews = require('../reviews-module');
 
 const propertyBinding = new Binding({ schema: Property.schema });
 const reviewsBinding = new Binding({ schema: Reviews.schema });
@@ -23,19 +23,17 @@ const typeDefs = `
 const resolvers = {
   Query: {
     async listing(_, { id }, context, info) {
-      const [property, reviews] = await Promise.all([
-        propertyBinding.query.property({ id }, `{ geo }`, { context }),
-        reviewsBinding.query.reviewsByPropertyId({ propertyId: id }, `{ content }`, { context })
-      ]);
-      return { id, property, reviews };
+      const property = propertyBinding.query.property({ id }, `{ geo }`, { context });
+      
+      return { id, ...property };
     }
   },
   Listing: {
     geo(_) {
-      return _.property.geo;
+      return _.geo;
     },
     reviews(_) {
-      return _.reviews;
+      return reviewsBinding.query.reviewsByPropertyId({ propertyId: id }, info, { context });
     }
   }
 };

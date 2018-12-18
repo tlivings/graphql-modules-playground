@@ -5,9 +5,9 @@ Playing with [GraphQL Modules](https://graphql-modules.com).
 
 ### Repository structure
 
-- `property-component` - a property module
-- `reviews-component` - a reviews module
-- `listing-component` - a composition of property and reviews
+- `property-module` - a property module
+- `reviews-module` - a reviews module
+- `listing-module` - a composition of property and reviews
 - `server` - the "application/service"
 
 ### Running
